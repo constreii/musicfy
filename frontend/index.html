@@ -277,7 +277,7 @@
     }
     .empty-state h3 { color: #fff; margin-bottom: 10px; }
 
-    /* ========== MOBILE NAV (cuma muncul di HP) ========== */
+    /* ========== MOBILE NAV ========== */
     .mobile-nav {
         display: none;
         grid-area: mnav;
@@ -614,7 +614,6 @@
         font-size: 50px; margin-bottom: 15px; opacity: 0.5;
     }
 
-    /* Progress di FP */
     .fp-progress-section {
         margin-top: 20px;
         flex-shrink: 0;
@@ -646,7 +645,6 @@
         margin-top: 8px;
     }
 
-    /* Kontrol FP */
     .fp-controls {
         display: flex; align-items: center;
         justify-content: center;
@@ -778,12 +776,8 @@
     }
     .toast.error { background: #ef4444; color: #fff; }
 
-    /* Hidden YT */
     #ytPlayer { position: fixed; left: -9999px; top: -9999px; }
 
-    /* =============================================
-       ============ RESPONSIVE TABLET ============
-       ============================================= */
     @media (max-width: 900px) {
         body {
             grid-template-columns: 1fr;
@@ -795,14 +789,12 @@
         }
         .sidebar { display: none; }
 
-        /* Song item: sembunyikan kolom album */
         .song-item {
             grid-template-columns: 30px 55px minmax(0,1fr) 55px 70px;
             gap: 12px;
         }
         .song-album { display: none; }
 
-        /* Player: 2 kolom */
         .player-bar {
             grid-template-columns: minmax(0,1fr) minmax(0,1fr);
             gap: 15px;
@@ -810,10 +802,8 @@
         }
         .volume-controls { display: none; }
 
-        /* Mobile nav tampil */
         .mobile-nav { display: flex; }
 
-        /* Full player */
         .fp-content { padding: 15px 25px calc(20px + env(safe-area-inset-bottom)); }
         .fp-main {
             grid-template-columns: 1fr;
@@ -827,9 +817,6 @@
         .fp-cover-wrapper { max-width: 260px; }
     }
 
-    /* =============================================
-       ============== RESPONSIVE HP ===============
-       ============================================= */
     @media (max-width: 600px) {
         .main { padding: 15px 15px 25px; }
 
@@ -852,7 +839,6 @@
         .browse-card h3 { font-size: 15px; }
         .browse-card .emoji { font-size: 60px; right: -10px; bottom: -10px; }
 
-        /* Song item super compact */
         .song-item {
             grid-template-columns: 22px 48px minmax(0,1fr) 50px;
             gap: 10px;
@@ -864,7 +850,6 @@
         .song-details p { font-size: 11px; }
         .song-duration { font-size: 11px; }
 
-        /* Actions: selalu tampil di HP, tapi diposisikan absolute */
         .song-actions {
             position: absolute;
             right: 8px;
@@ -881,7 +866,6 @@
         }
         .action-btn { font-size: 15px; padding: 3px; }
 
-        /* Player bar: column layout */
         .player-bar {
             display: flex;
             flex-direction: column;
@@ -913,12 +897,10 @@
         }
         .time { display: none; }
 
-        /* Mobile nav */
         .mobile-nav { padding: 6px 4px 4px; }
         .mnav-btn { padding: 5px 6px; font-size: 9px; }
         .mnav-btn .ico { font-size: 17px; }
 
-        /* Full player */
         .fp-content {
             padding: 12px 15px calc(15px + env(safe-area-inset-bottom));
             padding-top: calc(12px + env(safe-area-inset-top));
@@ -953,21 +935,16 @@
         .fp-ctrl-btn { font-size: 20px; }
         .fp-play-btn { width: 54px; height: 54px; font-size: 22px; }
 
-        /* Toast */
         .toast {
             bottom: calc(var(--player-h) + 80px);
             font-size: 13px;
             padding: 10px 20px;
         }
 
-        /* Modal */
         .modal { padding: 20px; }
         .modal h2 { font-size: 18px; }
     }
 
-    /* =============================================
-       =========== HP KECIL (<= 380px) ============
-       ============================================= */
     @media (max-width: 380px) {
         .now-cover { width: 38px; height: 38px; }
         .control-buttons { gap: 10px; }
@@ -990,9 +967,6 @@
         .fp-controls { gap: 15px; }
     }
 
-    /* =============================================
-       ======== TINGGI SEDANG (layar pendek) ======
-       ============================================= */
     @media (max-height: 700px) {
         .fp-cover-wrapper { max-width: 220px; }
         .fp-info h2 { font-size: 1.3rem; }
@@ -1023,9 +997,7 @@
             <button class="add-btn" onclick="openCreatePlaylistModal()" title="Buat playlist baru">+</button>
         </div>
 
-        <div id="playlistsList">
-            <!-- JS render -->
-        </div>
+        <div id="playlistsList"></div>
 
         <div class="library-title" style="margin-top: 20px;">Akun</div>
         <div class="nav-item" id="authBtn" onclick="showAuthModal()">
@@ -1077,7 +1049,7 @@
         </div>
     </main>
 
-    <!-- ========== MOBILE NAV (HP ONLY) ========== -->
+    <!-- ========== MOBILE NAV ========== -->
     <nav class="mobile-nav">
         <button class="mnav-btn active" data-view="home">
             <span class="ico">🏠</span>
@@ -1241,7 +1213,6 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <!-- Hidden YT Player -->
@@ -1251,7 +1222,6 @@
     // ==========================================
     // CONFIG & STATE
     // ==========================================
-    // Relative API URL: works on localhost, PWA install, and production hosting.
     const API_BASE = window.MUSICFY_API_BASE || '/api';
     const LS_FAV = 'musicfy_favorites_v1';
     const LS_HIST = 'musicfy_history_v1';
@@ -1300,6 +1270,74 @@
     }
 
     // ==========================================
+    // MEDIA SESSION API (PEMUTARAN LATAR BELAKANG & LOCKSCREEN)
+    // ==========================================
+    function setupMediaSession(song) {
+        if (!('mediaSession' in navigator)) return;
+
+        // Setel Metadata Lockscreen
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title || 'Musicfy',
+            artist: song.artist || 'Artist',
+            album: song.album || 'Musicfy Player',
+            artwork: [
+                { src: song.thumbnail || '/icons/icon-192.png', sizes: '96x96', type: 'image/png' },
+                { src: song.thumbnail || '/icons/icon-192.png', sizes: '128x128', type: 'image/png' },
+                { src: song.thumbnail || '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+                { src: song.thumbnail || '/icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+            ]
+        });
+
+        // Handler untuk tombol di Lockscreen / Notifikasi HP
+        navigator.mediaSession.setActionHandler('play', () => {
+            if (ytPlayer && ytReady) ytPlayer.playVideo();
+        });
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+            if (ytPlayer && ytReady) ytPlayer.pauseVideo();
+        });
+
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            playPrev();
+        });
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            playNext();
+        });
+
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (ytPlayer && ytReady && details.seekTime !== undefined) {
+                ytPlayer.seekTo(details.seekTime, true);
+                updateMediaSessionPosition();
+            }
+        });
+    }
+
+    function updateMediaSessionState(state) {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.playbackState = state;
+        }
+    }
+
+    function updateMediaSessionPosition() {
+        if ('mediaSession' in navigator && ytPlayer && ytReady && ytPlayer.getDuration) {
+            const duration = ytPlayer.getDuration();
+            const currentTime = ytPlayer.getCurrentTime();
+            if (duration && !isNaN(duration) && duration > 0) {
+                try {
+                    navigator.mediaSession.setPositionState({
+                        duration: duration,
+                        playbackRate: 1,
+                        position: currentTime
+                    });
+                } catch (e) {
+                    // beberapa browser abaikan error ini
+                }
+            }
+        }
+    }
+
+    // ==========================================
     // LOCAL STORAGE: FAVORITES
     // ==========================================
     function getFavorites() {
@@ -1335,7 +1373,6 @@
         const count = getFavorites().length;
         $('favCount').textContent = count;
 
-        // Mobile badge
         const mb = $('favCountMobile');
         if (mb) {
             mb.textContent = count;
@@ -1424,13 +1461,16 @@
         if (s === YT.PlayerState.PLAYING) {
             isPlaying = true;
             updatePlayBtn();
+            updateMediaSessionState('playing');
             startProgressTimer();
         } else if (s === YT.PlayerState.PAUSED) {
             isPlaying = false;
             updatePlayBtn();
+            updateMediaSessionState('paused');
         } else if (s === YT.PlayerState.ENDED) {
             isPlaying = false;
             updatePlayBtn();
+            updateMediaSessionState('none');
             stopProgressTimer();
             playNext();
         }
@@ -1577,6 +1617,9 @@
         updateActiveState();
         updateLikeButtons();
         loadLyrics(song);
+
+        // Sync dengan Latar Belakang / Lockscreen
+        setupMediaSession(song);
     }
 
     function updatePlayBtn() {
@@ -1654,6 +1697,7 @@
                 $('fpTotalTime').textContent = formatTime(dur);
             }
             updateActiveLyric(cur);
+            updateMediaSessionPosition();
         }, 250);
     }
 
@@ -1669,9 +1713,9 @@
         if (e.touches && e.touches[0]) clientX = e.touches[0].clientX;
         const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         ytPlayer.seekTo(pct * dur, true);
+        updateMediaSessionPosition();
     }
 
-    // Support click + touch
     ['progressBar', 'fpProgressBar'].forEach(id => {
         const el = $(id);
         el.addEventListener('click', (e) => seekProgress(el, e));
@@ -2100,10 +2144,9 @@
     }
 
     // ==========================================
-    // NAVIGATION (Sidebar + Mobile Nav)
+    // NAVIGATION
     // ==========================================
     function handleNavigation(view) {
-        // Update active state di kedua nav
         document.querySelectorAll('.nav-item').forEach(n => {
             n.classList.toggle('active', n.dataset.view === view);
         });
@@ -2125,7 +2168,7 @@
     });
 
     // ==========================================
-    // SEARCH
+    // SEARCH INPUT HANDLERS
     // ==========================================
     $('searchInput').addEventListener('input', (e) => {
         clearTimeout(searchTimeout);
@@ -2148,9 +2191,6 @@
     }
     window.quickSearch = quickSearch;
 
-    // ==========================================
-    // LIKE BUTTON PLAYER BAR
-    // ==========================================
     function toggleLikeCurrent() {
         const song = songs[currentIndex];
         if (!song) return;
@@ -2159,7 +2199,7 @@
     window.toggleLikeCurrent = toggleLikeCurrent;
 
     // ==========================================
-    // AUTH
+    // AUTH & BACKEND CHECK
     // ==========================================
     async function checkAuth() {
         try {
@@ -2177,9 +2217,6 @@
     }
     window.showAuthModal = showAuthModal;
 
-    // ==========================================
-    // CHECK BACKEND
-    // ==========================================
     async function checkBackend() {
         try {
             const res = await fetch(`${API_BASE}/playlists`);
@@ -2194,7 +2231,7 @@
     }
 
     // ==========================================
-    // KEYBOARD SHORTCUTS
+    // SHORTCUTS
     // ==========================================
     document.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT') return;
@@ -2222,11 +2259,9 @@
     updateFavCount();
     initVisualizer();
 
-    // Basic PWA connectivity feedback
-    window.addEventListener('offline', () => showToast('Mode offline: fitur online seperti search/lyrics tidak tersedia'));
+    window.addEventListener('offline', () => showToast('Mode offline: fitur online tidak tersedia'));
     window.addEventListener('online', () => showToast('Koneksi kembali online'));
 
-    // PWA service worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').catch(err => {
@@ -2236,7 +2271,6 @@
     }
 
     console.log('%c🎵 Musicfy Full Ready!', 'color: #1db954; font-size: 18px; font-weight: bold;');
-    console.log('%cShortcuts: [Space] play/pause • [F] full player • [← →] skip 5s', 'color: #b3b3b3;');
 </script>
 
 </body>
